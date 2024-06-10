@@ -102,37 +102,96 @@ class _ContainerWithTimerState extends State<ContainerWithTimer> {
 class BorderPainter extends CustomPainter {
   final AnimationController controller;
 
-  BorderPainter({required this.controller});
+  late final Animation<double> lastAnim;
+  late final Animation<double> preLastAnim;
+  late final Animation<double> centerAnim;
+  late final Animation<double> firstAnim;
+
+  BorderPainter({required this.controller}) {
+    firstAnim = Tween(begin: 0.25, end: 0.0).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0.0, 0.25, curve: Curves.fastOutSlowIn),
+      ),
+    );
+    centerAnim = Tween(begin: 0.25, end: 0.0).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0.25, 0.5, curve: Curves.fastOutSlowIn),
+      ),
+    );
+    preLastAnim = Tween(begin: 0.25, end: 0.0).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0.5, 0.75, curve: Curves.fastOutSlowIn),
+      ),
+    );
+    lastAnim = Tween(begin: 0.25, end: 0.0).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0.75, 1.0, curve: Curves.fastOutSlowIn),
+      ),
+    );
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final percent = 1.0;
+    final lastPercent = lastAnim.value;
     const offset = 15.0;
-    final filledPaint = Paint();
-    filledPaint.color = Colors.white;
-    filledPaint.style = PaintingStyle.stroke;
-    filledPaint.strokeWidth = 5;
+    final lastPaint = Paint();
+    lastPaint.color = Colors.white;
+    lastPaint.style = PaintingStyle.stroke;
+    lastPaint.strokeWidth = 5;
 
     canvas.drawArc(
       Offset(offset, offset) &
           Size(size.width - offset * 2, size.height - offset * 2),
       pi / 2,
-      pi * 2 * percent,
+      pi * 2 * lastPercent,
       false,
-      filledPaint,
+      lastPaint,
     );
 
-    final freePaint = Paint();
-    freePaint.color = Color(0xFFFFC700);
-    freePaint.style = PaintingStyle.stroke;
-    freePaint.strokeWidth = 5;
+    final preLastPercent = preLastAnim.value;
+    final preLastPaint = Paint();
+    preLastPaint.color = Colors.white;
+    preLastPaint.style = PaintingStyle.stroke;
+    preLastPaint.strokeWidth = 5;
     canvas.drawArc(
       Offset(offset, offset) &
           Size(size.width - offset * 2, size.height - offset * 2),
-      pi * 2 * percent + (pi / 2),
-      pi * 2 * (1.0 - percent),
+      pi * 2 * preLastPercent + (pi / 2),
+      pi * 2 * preLastPercent,
       false,
-      freePaint,
+      preLastPaint,
+    );
+
+    final centerPercent = centerAnim.value;
+    final centerPaint = Paint();
+    centerPaint.color = Colors.white;
+    centerPaint.style = PaintingStyle.stroke;
+    centerPaint.strokeWidth = 5;
+    canvas.drawArc(
+      Offset(offset, offset) &
+          Size(size.width - offset * 2, size.height - offset * 2),
+      (pi * 3) / 2,
+      pi * 2 * centerPercent,
+      false,
+      centerPaint,
+    );
+
+    final firstPercent = firstAnim.value;
+    final firstPaint = Paint();
+    firstPaint.color = Colors.white;
+    firstPaint.style = PaintingStyle.stroke;
+    firstPaint.strokeWidth = 5;
+    canvas.drawArc(
+      Offset(offset, offset) &
+          Size(size.width - offset * 2, size.height - offset * 2),
+      2 * pi,
+      pi * 2 * firstPercent,
+      false,
+      firstPaint,
     );
   }
 
