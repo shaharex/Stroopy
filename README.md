@@ -28,11 +28,26 @@ Welcome to the **Stroopy - Stroop Challenge Game**! This game is designed to cha
 | ![rankings](https://github.com/shaharex/Stroopy/assets/155885618/ecf790bb-8f69-4abb-b2a4-1f46ac124c9c) | 
 ## Installation
 
-To get started with Stroopy, follow these steps:
+## To get started with Stroopy, follow this steps
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/shaharex/Stroopy.git
+1. Install Flutter using official installation guide: [Flutter installation guide](https://flutter.dev/docs/get-started/install).
+2. Clone the repository:
+    ```bash
+    git clone https://github.com/shaharex/Attendance-Check.git
+    ```
+3. Navigate to the project Directory:
+    ```bash
+    cd Attendance-Checker
+    ```
+4. Install dependencies:
+    ```bash
+    flutter pub get
+    ```
+5. Run the application:
+    ```bash
+    flutter run
+    ```
+
 
 
 
