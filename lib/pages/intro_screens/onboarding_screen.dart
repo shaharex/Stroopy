@@ -1,7 +1,5 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
-import 'package:stroopy/pages/home/home_page.dart';
+import 'package:stroopy/pages/home/nickname_page.dart';
 
 import 'intro_screen1.dart';
 import 'intro_screen2.dart';
@@ -14,7 +12,28 @@ class OnBoardingScreen extends StatefulWidget {
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
+class _OnBoardingScreenState extends State<OnBoardingScreen>
+    with SingleTickerProviderStateMixin {
+  // the one who rules them all
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..addListener(() {
+        setState(() {});
+      });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   final PageController _controller = PageController(
     initialPage: 0,
   );
@@ -43,9 +62,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         children: [
           PageView(
             onPageChanged: (index) {
+              _animationController.forward();
               setState(() {
                 onLastPage = (index == 2);
-                toggle = !toggle;
               });
               textOnBoarding(index);
             },
@@ -53,7 +72,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             children: [
               IntroScreen1(),
               IntroScreen2(
-                toggle: toggle,
+                controller: _animationController,
               ),
               IntroScreen3(),
             ],
@@ -76,7 +95,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       onTap: () {
                         _controller.animateToPage(
                           index,
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
                       },
@@ -108,7 +127,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   onBoardingText,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 20,
                   ),
                 ),
@@ -126,8 +145,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 alignment: const Alignment(0, 1),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NicknamePage()));
                   },
                   child: Container(
                     height: 60,
@@ -167,9 +188,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      width: 70,
-                      height: 70,
-                      child: Image.asset('logo/logo.png'),
+                      width: 60,
+                      height: 60,
+                      child: Image.asset('assets/logo/img.png'),
                     ),
                     const SizedBox(
                       width: 3,
