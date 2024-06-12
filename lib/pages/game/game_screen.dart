@@ -31,19 +31,20 @@ class _GameScreenState extends State<GameScreen>
     'O R A N G E'
   ];
   final List<Color> _colors = [
-    Color(0xff10A8FE),
-    Color(0xffFFC700),
-    Color(0xffC00DCF),
-    Color(0xffCF0505),
-    Color(0xff00A991),
-    Color(0xffFFA500),
+    const Color(0xff10A8FE),
+    const Color(0xffFFC700),
+    const Color(0xffC00DCF),
+    const Color(0xffCF0505),
+    const Color(0xff00A991),
+    const Color(0xffFFA500),
   ];
 
   String _displayedText = '?';
-  Color _displayedColor = Color.fromARGB(255, 150, 150, 150);
+  Color _displayedColor = const Color.fromARGB(255, 150, 150, 150);
   int _score = 0;
   Timer? _timer;
   List<int> _selectedIndexes = [];
+  bool _isRankingScreenShown = false;
 
   void _generateNewStroop() {
     // generate 3 unique random indexes
@@ -67,9 +68,7 @@ class _GameScreenState extends State<GameScreen>
 
   void _startTimer() {
     _timer?.cancel();
-    _timer = Timer(Duration(seconds: 2), () {
-      _showGameOverDialog();
-    });
+    _timer = Timer(Duration(seconds: 2), _showRankingsScreen);
   }
 
   void _checkAnswer(Color color) {
@@ -80,24 +79,28 @@ class _GameScreenState extends State<GameScreen>
         _controllerForAnimation.forward();
       });
     } else {
-      _showGameOverDialog();
+      _showRankingsScreen();
     }
     _generateNewStroop();
-    _controllerForAnimation.forward();
   }
 
-  void _showGameOverDialog() {
-    _timer?.cancel();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RankingScreen(
-          playerName: widget.playerName,
-          playerIcon: widget.playerIcon,
-          score: _score,
+  void _showRankingsScreen() {
+    if (!_isRankingScreenShown) {
+      _isRankingScreenShown = true;
+      _timer?.cancel();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RankingScreen(
+            playerName: widget.playerName,
+            playerIcon: widget.playerIcon,
+            score: _score,
+          ),
         ),
-      ),
-    );
+      ).then((__) {
+        _isRankingScreenShown = false;
+      });
+    }
   }
 
   void _resetGame() {
@@ -143,7 +146,7 @@ class _GameScreenState extends State<GameScreen>
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               child: Column(
                 children: [
                   Padding(
@@ -183,19 +186,11 @@ class _GameScreenState extends State<GameScreen>
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 10,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const SizedBox(
-                          width: 100,
-                        ),
-                        Text(
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
                           'Score: $_score',
                           style: const TextStyle(
                             color: Color(0xFF00A991),
@@ -203,15 +198,19 @@ class _GameScreenState extends State<GameScreen>
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Text(
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(right: 25),
+                        alignment: Alignment.centerRight,
+                        child: Text(
                           widget.playerName,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 20,
@@ -243,7 +242,7 @@ class _GameScreenState extends State<GameScreen>
                                     bottomShadow: boxShadow,
                                     controller: _controllerForAnimation,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30,
                                   ),
                                   ContainerWithTimer(
@@ -251,7 +250,7 @@ class _GameScreenState extends State<GameScreen>
                                     bottomShadow: boxShadow,
                                     controller: _controllerForAnimation,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30,
                                   ),
                                   ContainerWithTimer(

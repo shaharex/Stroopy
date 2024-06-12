@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:stroopy/pages/game/game_screen.dart';
 import 'package:stroopy/pages/home/nickname_page.dart';
 
 class RankingScreen extends StatefulWidget {
@@ -18,6 +19,9 @@ class RankingScreen extends StatefulWidget {
 }
 
 class _RankingScreenState extends State<RankingScreen> {
+  late String selectedImagePath;
+  late String selectedName;
+  int _selectedIndex = -1;
   final List _rankingPlayers = [
     [
       'Yixiao',
@@ -52,6 +56,8 @@ class _RankingScreenState extends State<RankingScreen> {
     super.initState();
     _rankingPlayers.add([widget.playerName, widget.playerIcon, widget.score]);
     _rankingPlayers.sort((a, b) => b[2].compareTo(a[2]));
+    selectedName = widget.playerName;
+    selectedImagePath = widget.playerIcon;
   }
 
   BoxShadow bottomShadow = BoxShadow(
@@ -155,23 +161,54 @@ class _RankingScreenState extends State<RankingScreen> {
                     width: 300,
                     height: 500,
                     child: ListView.separated(
-                        itemCount: _rankingPlayers.length,
-                        separatorBuilder: (context, index) {
-                          return Container(
-                            height: 1,
-                            color: Colors.grey[500],
-                          );
-                        },
-                        itemBuilder: (context, index) {
-                          return Container(
+                      itemCount: _rankingPlayers.length,
+                      separatorBuilder: (context, index) {
+                        return Container(
+                          height: 1,
+                          color: Colors.grey[500],
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        // String imagePath = _rankingPlayers[index][1];
+                        // String playerName = _rankingPlayers[index][0];
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedImagePath = _rankingPlayers[index][1];
+                              selectedName = _rankingPlayers[index][0];
+                              _selectedIndex = index;
+                            });
+                          },
+                          child: Container(
                             alignment: Alignment.center,
-                            padding: const EdgeInsets.only(bottom: 10, top: 10),
                             width: 100,
                             height: 100,
                             child: Row(
                               children: [
-                                Image.asset(_rankingPlayers[index][1]),
-                                SizedBox(
+                                Stack(
+                                  children: [
+                                    Image.asset(_rankingPlayers[index][1]),
+                                    Container(
+                                      width: 90,
+                                      height: 90,
+                                      margin: const EdgeInsets.only(
+                                          top: 1,
+                                          left: 5,
+                                          bottom: 10,
+                                          right: 5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(80),
+                                        border: _selectedIndex == index
+                                            ? Border.all(
+                                                color: const Color(0xFf00A991),
+                                                width: 5)
+                                            : Border.all(
+                                                color: Colors.white, width: 4),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Column(
@@ -180,14 +217,14 @@ class _RankingScreenState extends State<RankingScreen> {
                                   children: [
                                     Text(
                                       _rankingPlayers[index][0],
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w800,
                                       ),
                                     ),
                                     Text(
                                       'Score: ${_rankingPlayers[index][2]}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 22,
                                         color: Color(0xff00A991),
                                         fontWeight: FontWeight.w600,
@@ -197,13 +234,15 @@ class _RankingScreenState extends State<RankingScreen> {
                                 ),
                               ],
                             ),
-                          );
-                        }),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
-            Text(
+            const Text(
               'Select a player from the top',
               style: TextStyle(
                 color: Color(0xff00A991),
@@ -219,58 +258,88 @@ class _RankingScreenState extends State<RankingScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: 180,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Color(0xff10A8FE),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      'Play again',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NicknamePage()));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 180,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Color(0xff00A991),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        'New Player',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            PlayerButtons(
+              widget: widget,
+              selectedName: selectedName,
+              selectedImagePath: selectedImagePath,
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PlayerButtons extends StatelessWidget {
+  const PlayerButtons({
+    super.key,
+    required this.widget,
+    required this.selectedName,
+    required this.selectedImagePath,
+  });
+
+  final RankingScreen widget;
+  final String selectedName;
+  final String selectedImagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return GameScreen(
+                  playerName: selectedName,
+                  playerIcon: selectedImagePath,
+                );
+              }));
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: 180,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Color(0xff10A8FE),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Text(
+                'Play again',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NicknamePage()));
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: 180,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Color(0xff00A991),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Text(
+                'New Player',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
