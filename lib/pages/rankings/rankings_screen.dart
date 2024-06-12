@@ -71,199 +71,206 @@ class _RankingScreenState extends State<RankingScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Image.asset('assets/logo/img.png'),
-                      ),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      const Text(
-                        'Stroopy',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset('assets/logo/img.png'),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: Image.asset(widget.playerIcon),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(
-                    width: 100,
-                  ),
-                  Text(
-                    widget.playerName,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 600,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.yellow[100],
-                borderRadius: BorderRadius.circular(70),
-                boxShadow: [bottomShadow],
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    'Ranking',
-                    style: TextStyle(
-                      color: Color(0xff00A991),
-                      fontSize: 46,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: 300,
-                    height: 500,
-                    child: ListView.separated(
-                      itemCount: _rankingPlayers.length,
-                      separatorBuilder: (context, index) {
-                        return Container(
-                          height: 1,
-                          color: Colors.grey[500],
-                        );
-                      },
-                      itemBuilder: (context, index) {
-                        // String imagePath = _rankingPlayers[index][1];
-                        // String playerName = _rankingPlayers[index][0];
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedImagePath = _rankingPlayers[index][1];
-                              selectedName = _rankingPlayers[index][0];
-                              _selectedIndex = index;
-                            });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 100,
-                            height: 100,
-                            child: Row(
-                              children: [
-                                Stack(
-                                  children: [
-                                    Image.asset(_rankingPlayers[index][1]),
-                                    Container(
-                                      width: 90,
-                                      height: 90,
-                                      margin: const EdgeInsets.only(
-                                          top: 1,
-                                          left: 5,
-                                          bottom: 10,
-                                          right: 5),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(80),
-                                        border: _selectedIndex == index
-                                            ? Border.all(
-                                                color: const Color(0xFf00A991),
-                                                width: 5)
-                                            : Border.all(
-                                                color: Colors.white, width: 4),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      _rankingPlayers[index][0],
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Score: ${_rankingPlayers[index][2]}',
-                                      style: const TextStyle(
-                                        fontSize: 22,
-                                        color: Color(0xff00A991),
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        const Text(
+                          'Stroopy',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: Image.asset(widget.playerIcon),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Text(
-              'Select a player from the top',
-              style: TextStyle(
-                color: Color(0xff00A991),
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 100,
+                    ),
+                    Text(
+                      widget.playerName,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Text(
-              'or',
-              style: TextStyle(
-                color: Colors.grey[500],
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            PlayerButtons(
-              widget: widget,
-              selectedName: selectedName,
-              selectedImagePath: selectedImagePath,
-            ),
-          ],
+              Container(
+                height: 600,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.yellow[100],
+                  borderRadius: BorderRadius.circular(70),
+                  boxShadow: [bottomShadow],
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Ranking',
+                      style: TextStyle(
+                        color: Color(0xff00A991),
+                        fontSize: 46,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    SizedBox(
+                      width: 300,
+                      height: 500,
+                      child: ListView.separated(
+                        itemCount: _rankingPlayers.length,
+                        separatorBuilder: (context, index) {
+                          return Container(
+                            height: 1,
+                            color: Colors.grey[500],
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          // String imagePath = _rankingPlayers[index][1];
+                          // String playerName = _rankingPlayers[index][0];
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImagePath = _rankingPlayers[index][1];
+                                selectedName = _rankingPlayers[index][0];
+                                _selectedIndex = index;
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 100,
+                              height: 100,
+                              child: Row(
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Image.asset(_rankingPlayers[index][1]),
+                                      Container(
+                                        width: 90,
+                                        height: 90,
+                                        margin: const EdgeInsets.only(
+                                            top: 1,
+                                            left: 5,
+                                            bottom: 10,
+                                            right: 5),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(80),
+                                          border: _selectedIndex == index
+                                              ? Border.all(
+                                                  color:
+                                                      const Color(0xFf00A991),
+                                                  width: 5)
+                                              : Border.all(
+                                                  color: Colors.white,
+                                                  width: 4),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _rankingPlayers[index][0],
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Score: ${_rankingPlayers[index][2]}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          color: Color(0xff00A991),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Text(
+                'Select a player from the top',
+                style: TextStyle(
+                  color: Color(0xff00A991),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                'or',
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              PlayerButtons(
+                widget: widget,
+                selectedName: selectedName,
+                selectedImagePath: selectedImagePath,
+              ),
+            ],
+          ),
         ),
       ),
     );
