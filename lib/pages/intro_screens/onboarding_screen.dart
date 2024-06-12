@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stroopy/pages/home/nickname_page.dart';
+import 'package:stroopy/pages/nickname/nickname_page.dart';
 
 import 'intro_screen1.dart';
 import 'intro_screen2.dart';

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:stroopy/pages/game/game_screen.dart';
-import 'package:stroopy/pages/home/nickname_page.dart';
+import 'package:stroopy/pages/nickname/nickname_page.dart';
 
 class RankingScreen extends StatefulWidget {
   const RankingScreen({
