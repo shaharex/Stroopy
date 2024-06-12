@@ -33,11 +33,11 @@ Welcome to the **Stroopy - Stroop Challenge Game**! This game is designed to cha
 1. Install Flutter using official installation guide: [Flutter installation guide](https://flutter.dev/docs/get-started/install).
 2. Clone the repository:
     ```bash
-    git clone https://github.com/shaharex/Attendance-Check.git
+    git clone https://github.com/shaharex/Stroopy.git
     ```
 3. Navigate to the project Directory:
     ```bash
-    cd Attendance-Checker
+    cd Stroopy
     ```
 4. Install dependencies:
     ```bash
